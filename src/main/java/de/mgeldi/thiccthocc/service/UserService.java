@@ -1,5 +1,6 @@
 package de.mgeldi.thiccthocc.service;
 
+import de.mgeldi.thiccthocc.exceptions.UserNotFoundException;
 import de.mgeldi.thiccthocc.model.User;
 import de.mgeldi.thiccthocc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(UUID userId){
+    public void deleteUser(UUID userId) {
         userRepository.deleteUserById(userId);
+    }
+
+    public User findUserByUuid(UUID userId) throws UserNotFoundException {
+        return userRepository.findUserById(userId).orElseThrow(() -> new UserNotFoundException("User by id" + userId + "was not found!"));
     }
 }
