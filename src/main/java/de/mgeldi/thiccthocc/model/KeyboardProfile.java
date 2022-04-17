@@ -14,7 +14,7 @@ public class KeyboardProfile implements Serializable {
     private UUID keyboardProfileId;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId")
+    @JoinColumn(name = "owner")
     private User owner;
 
 
@@ -23,6 +23,16 @@ public class KeyboardProfile implements Serializable {
     @CollectionTable(name = "keymap",
             joinColumns = {@JoinColumn(name = "keyboardProfileId")})
     private Map<String, Byte[]> soundBytes;
+
+    public KeyboardProfile(UUID keyboardProfileId, User owner, Map<String, Byte[]> soundBytes) {
+        this.keyboardProfileId = keyboardProfileId;
+        this.owner = owner;
+        this.soundBytes = soundBytes;
+    }
+
+    public KeyboardProfile() {
+        
+    }
 
     public User getOwner() {
         return owner;

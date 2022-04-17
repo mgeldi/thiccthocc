@@ -5,29 +5,34 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "users")
 public class User implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private UUID id;
 
+    @Id
     @Column(unique = true, nullable = false)
     @Length(min=3, max=20, message = "Name must be between 3 and 20 characters long!")
     private String username;
+
+    public User(String username, String email, List<KeyboardProfile> keyboardProfile, String profilePictureUrl) {
+        this.username = username;
+        this.email = email;
+        this.keyboardProfile = keyboardProfile;
+        this.profilePictureUrl = profilePictureUrl;
+    }
 
     @Email(message = "Not a valid email address!")
     @Column(unique = true, nullable = false)
     private String email;
 
-    public UUID getId() {
-        return id;
-    }
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "owner")
+    private List<KeyboardProfile> keyboardProfile;
 
-    public void setId(UUID uuid) {
-        this.id = uuid;
+    public User() {
+
     }
 
     public String getUsername() {
