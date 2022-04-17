@@ -1,28 +1,33 @@
 package de.mgeldi.thiccthocc.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.UUID;
 
 @Entity(name = "users")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
-    private UUID uuid;
+    private UUID id;
 
-    @Column(unique = true, nullable = false, updatable = true)
+    @Column(unique = true, nullable = false)
+    @Length(min=3, max=20, message = "Name must be between 3 and 20 characters long!")
     private String username;
 
-    @Column(unique = true, nullable = false, updatable = true)
+    @Email(message = "Not a valid email address!")
+    @Column(unique = true, nullable = false)
     private String email;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(UUID uuid) {
+        this.id = uuid;
     }
 
     public String getUsername() {
