@@ -42,6 +42,15 @@ public class UserService {
     }
 
     @Transactional
+    public User updateUser(User user, String username) throws UserNotFoundException {
+        User oldUser = findUserByUsername(username);
+        if (user.getUsername() != null) oldUser.setUsername(user.getUsername());
+        if (user.getEmail() != null) oldUser.setEmail(user.getEmail());
+        if (user.getProfilePictureUrl() != null) oldUser.setProfilePictureUrl(user.getProfilePictureUrl());
+        return updateUser(oldUser);
+    }
+
+    @Transactional
     public void deleteUserByUsername(String username) {
         userRepository.deleteUserByUsername(username);
     }

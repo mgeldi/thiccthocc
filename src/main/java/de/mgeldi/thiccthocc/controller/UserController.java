@@ -26,10 +26,10 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/find/{username}")
+    @GetMapping("/profile/{username}")
     public ResponseEntity<User> getUserById(@PathVariable("username") String username) throws UserNotFoundException {
         User user = userService.findUserByUsername(username);
-        return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -40,11 +40,7 @@ public class UserController {
 
     @PutMapping("/update/{username}")
     public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable("username") String username) throws UserNotFoundException {
-        User oldUser = userService.findUserByUsername(username);
-        if (user.getUsername() != null) oldUser.setUsername(user.getUsername());
-        if (user.getEmail() != null) oldUser.setEmail(user.getEmail());
-        if (user.getProfilePictureUrl() != null) oldUser.setProfilePictureUrl(user.getProfilePictureUrl());
-        User updatedUser = userService.updateUser(oldUser);
+        User updatedUser = userService.updateUser(user, username);
         return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
     }
 
