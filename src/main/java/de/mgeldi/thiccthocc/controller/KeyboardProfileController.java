@@ -24,10 +24,10 @@ public class KeyboardProfileController {
         this.userService = userService;
     }
 
-    @GetMapping("/find/{username}")
+    @GetMapping("/profile/{username}")
     public ResponseEntity<List<KeyboardProfile>> getAllKeyboardProfilesForUser(@PathVariable String username) throws UserNotFoundException, KeyboardProfileNotFoundException {
         List<KeyboardProfile> keyboardProfiles = keyboardProfileService.findAllKeyboardProfilesForUser(userService.findUserByUsername(username));
-        return new ResponseEntity<>(keyboardProfiles, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(keyboardProfiles, HttpStatus.OK);
     }
 
     @PostMapping("/add")
